@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>reveal.js - Seminar I</title>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css" />
+
+
+    <!-- zoomR figures when hovering -->
+    <style>
+      .zoom {
+	  transition: transform .5s; /* Animation */
+	  margin: 0;
+	  background-color: white;
+      }
+
+      .zoom:hover {right: 50%;
+		    transform:  translate(0) scale(1.5); /* (150% zoomR - Note: if the zoomR is too large, it will go outside of the viewport) */
+		    box-shadow: 0px 0px 10px 1200px rgba(0,0,0,0.3);
+		   }
+    </style>
+
+    
+    <style>
+      .zoomR {
+	  transition: transform .5s; /* Animation */
+	  margin: 0;
+	  background-color: white;
+      }
+
+      .zoomR:hover {right: 50%;
+		    transform:  translate(50%) scale(1.5); /* (150% zoomR - Note: if the zoomR is too large, it will go outside of the viewport) */
+		    box-shadow: 0px 0px 10px 1200px rgba(0,0,0,0.3);
+		   }
+    </style>
+
+    <style>
+      .zoomL {
+	  transition: transform .2s; /* Animation */
+	  margin: 0;
+	  background-color: white;
+      }
+
+      .zoomL:hover {right: 50%;
+		    transform:  translate(-50%) scale(1.5); /* (150% zoomR - Note: if the zoomR is too large, it will go outside of the viewport) */
+		    box-shadow: 0px 0px 10px 1200px rgba(0,0,0,0.3);
+		   }
+    </style>
+
+    <style>
+      .zoomB {
+	  transition: transform .2s; /* Animation */
+	  margin: 0;
+	  background-color: white;
+      }
+
+      .zoomB:hover {bottom: 50%;
+		    transform:  translate(0,50%) scale(1.5); /* (150% zoomR - Note: if the zoomR is too large, it will go outside of the viewport) */
+		    box-shadow: 0px 0px 10px 1200px rgba(0,0,0,0.3);
+		   }
+    </style>
+
+        <style>
+      .zoomT {
+	  transition: transform .2s; /* Animation */
+	  margin: 0;
+	  background-color: white;
+      }
+
+      .zoomT:hover {bottom: 50%;
+		    transform:  translate(0,-50%) scale(1.5); /* (150% zoomR - Note: if the zoomR is too large, it will go outside of the viewport) */
+		    box-shadow: 0px 0px 10px 1200px rgba(0,0,0,0.3);
+		   }
+    </style>
+
+    
+  </head>
+  <body>
+
+    <div class="reveal">
+      <div class="slides">
+
+	<!-- Title Slide -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="25%"> 
+	  <div id="content"  style="margin-top: 15%;
+				    display: flex;
+				    flex-direction: column;
+				    align-items: center;
+				    ">
+	    
+            <div style="width:80%;margin-top:5%;">
+              <h2>Phase-Field and Molecular Dynamics Models for Cell Motility and Deformability</h2>
+              <h4>Ana Bensabat Paulino</h4>
+            </div>
+
+	    <div style="width:100%;margin-top:17.5%;">
+              <h5>Dia Internacional das Mulheres e Raparigas na Ciência</h5>
+              <h5>Café com Física 12/02/2025</h5>
+	    </div>
+
+	    
+	    <img style="position:absolute;
+			width: 250px;
+			left:0%;
+			top:-6%;
+			margin: 1%;" data-src="media/uc_logo.png" />
+	    
+	    <img style="position:absolute;
+			width: 250px;
+			right:0%;
+			top:0%;
+			margin: 2%;" data-src="media/cfisuc.png" />
+
+	  </div>
+
+	</section>
+
+	
+	<!-- Slide 1 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2>Soft and Biological Modelling @ CFisUC</h2>
+	  <div style="margin-left: 5%; margin-right: 5%; font-size:40px;">
+	    <p style="margin:0;" align="centre">We use physics and mathematics to simulate physical processes in complex biological systems.</p>	    
+
+	    <img style="width=200px;" data-src="media/group.png" />
+	  </div>
+	    
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:11%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    biologicalmodelling.com</p>
+
+
+	</section>
+
+	
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">The Phase-Field Model¹</h2>
+
+	  <p style="margin:0;width=60%;" align="centre">
+	    Different spatial domains are modeled as phases. The boundary creation/maintenance and interaction between the different domains is encoded into the <b>Free Energy Functional.</b>
+	    The dynamics of the system are obtained by minimising the Free Energy:</p>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      flex-direction: column;
+		      font-size:40px;">
+
+
+	    <div style="width:100%;">
+	    \[F[\phi_1, \phi_2, \cdots] = \int \text{d}^3r \sum_i \left(\frac{\varepsilon^2}{2}|\nabla \phi_i|^2 + V(\phi_1, \phi_2, \cdots)\right) + \sum_i \alpha_i (V[\phi_i]-V_o^i)^2 
+	    \]
+	    \[\frac{\partial \phi_i}{\partial t} = - M \frac{\delta F[\phi_1, \phi_2, \cdots]}{\delta \phi_i}\]
+	    </div>
+
+	    <div style="width:70%;">
+	      <img style="" data-src="media/phase-field-diagram.png" />
+	      </div>
+	    
+	    
+	  </div>
+
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -10%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    [1] Makiko Nonomura. “Study on Multicellular Systems Using a Phase Field Model”. In: PLOS ONE 7.4 (Apr. 2012), pp. 1–9</p>
+	  
+	</section>
+
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Active Matter and Molecular Dynamics</h2>
+
+	  In my work, I am modelling the cytoskeleton of the cell as <b>active brownian particles</b> and <b>active filaments</b>. To that end, I perform simulations of <b>molecular dynamics</b>.
+
+	    <div style="margin-left: 10%; margin-right: 10%;">
+	      <!-- <div class="fragment" style="position:absolute; -->
+	      <!-- 				   margin-left: 5%; -->
+	      <!-- 				   margin-right: 10%; -->
+	      <!-- 				   left: 0; -->
+	      <!-- 				   top:22%; -->
+	      <!-- 				   font-size:30px; -->
+	      <!-- 				   text-align:left;"> -->
+		
+	      <!-- 	\[ -->
+	      <!-- 	\begin{align} -->
+	      <!-- 	\gamma \mathbf{\dot{r}}_i& = F_\text{act}\mathbf{n}_i - \nabla_i \sum_{i\neq j}U(r_{ij}) + \sqrt{2\gamma k_B T}\xi_i \\ -->
+	      <!-- 	\mathbf{n}_i &= (\cos\theta_i(t),\sin\theta_i(t)) \quad \text{with} \quad \dot{\theta}=\sqrt{2D_{\theta_i}}\eta_i \quad \text{and} \quad D_\theta = 3\gamma k_BT/ \sigma^2_d -->
+	      <!-- 	\end{align} -->
+	      <!-- 	\]		   -->
+	      <!-- </div> -->
+
+	      <!-- <div class="fragment" style="position:absolute; -->
+	      <!-- 				   margin-left: 10%; -->
+	      <!-- 				   margin-right: 5%; -->
+	      <!-- 				   right:0%; -->
+	      <!-- 				   top:25%; -->
+	      <!-- 				   font-size:30px;"> -->
+	      <!-- 	\[ -->
+	      <!-- 	\begin{align} -->
+	      <!-- 	&\langle\xi_i(t)\rangle=0, \quad \langle\xi_i(t)\xi_j(t^\prime)\rangle=\delta_{ij}\delta(t-t^\prime)\\ -->
+	      <!--   &\langle\eta_i(t)\rangle=0, \quad \langle\eta_i(t)\eta_j(t^\prime)\rangle=\delta_{ij}\delta(t-t^\prime) -->
+	      <!-- 	\end{align} -->
+	      <!-- 	\] -->
+		
+	      <!-- </div>	     -->
+
+	      
+	      <div  class="fragment" style="position:absolute;
+					    margin-left: 3%;
+					    margin-right: 3%;
+					    left: 0%;
+					    top:30%;
+					    width:50%;
+					    font-size:20px;
+					    text-align:right;">
+
+		<video width="400px" loop="true" src="media/pbp_compressed.mp4" controls="true">
+		</video>
+		<video width="400px" loop="true" src="media/abp_compressed.mp4" controls="true">
+		</video>
+	      </div>
+	      
+
+	      <div  class="fragment" style="position:absolute;
+					    margin-left: 3%;
+					    margin-right: 3%;
+					    left: 4%;
+					    top:70%;
+					    width:50%;
+					    font-size:30px;">
+
+		How do these structures - <b>Mobility Induced Phase-Separations (MIPS)</b> -  emerge in the parameter space of:
+		\[
+		\begin{align}
+		\phi_P = N\frac{\pi \sigma_D^2}{4S} &&
+		\text{Pe} = \frac{Lv_\text{act}}{D} = \frac{\sigma_D F\text{act}}{k_B T}
+		\end{align}\]
+	      </div>
+
+	      <div  class="fragment" style="position:absolute;
+					    right: 0%;
+					    top:45%;
+					    width:50%;
+					    font-size:35px;">
+		
+		<p>To apply model the cytoskeleton in this framework:</p>
+		<ul>
+		  <li>Generalise to 3D</li>
+		  <li>Couple to phase-field</li>
+		  <li>Generalise to filaments</li>
+		</ul>
+	      </div>
+
+	  
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+
+
+	</section>
+
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">The cytoskeleton of the cell</h2>
+
+	  This is a complex active structure of different kinds of proteic filaments that give cells their <b>structure</b> and <b>mobility</b>.
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    [2] Pollard TD, Goldman RD. Overview of the Cytoskeleton from an Evolutionary Perspective. Cold Spring Harb Perspect Biol. 2018 Jul 2;10(7):a030288.</p>
+	  
+	  
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+
+	    <div  style="" class="fragment">
+	      <img width="600px" class="zoom" data-src="media/cytoskeleton.png" style="position:absolute;
+											left:15%;
+											top:20%;" />
+
+	    </div>
+
+	    <div  style="" class="fragment">
+	      <video height="600px" controls="true" loop="true" style="position:absolute;
+											right:15%;
+											top:25%;">
+		<source src="media/amoeba.mp4" type="video/mp4" >
+	      </video>
+
+
+	    </div>
+	  </div>
+
+	</section>
+	
+	
+	<!-- Slide 2 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;margin-bottom:5%;">My Work</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+
+	    <div style="width:33%;" class="fragment">
+	      <h3>Let's get Groovy</h3>
+
+	      <video height="600px" controls="true" loop="true">
+		<source src="media/grooves-2.mp4" type="video/mp4" >
+	      </video>
+	      
+	      <p>Modelling the deformation and caging of endothelial cell nuclei in grooved substrates.</p>
+	      <p style="white-space: pre-line">
+		<b>Colaborators:</b>
+		Abdul Barakat (École Polytechnique)          
+		Claire Leclech (École Polytechnique)</p>
+	    </div>
+
+	    <div style="width:33%;" class="fragment">
+	      <h3>Saving Humanity</h3>
+	      <video height="600px" controls="true"  loop="true">
+		  <source src="media/malaria-cropped.mp4" type="video/mp4" >
+	      </video>
+	      
+	      <p>Investigating the pitting of malaria infected
+	      RBCs.</p>
+	      <p style="white-space: pre-line">
+		<b>Colaborators:</b>
+		Aurora Hernandez-Machado (Universitat de Barcelona) 
+		Tomas Alarcón (CRM)</p>
+	    </div>
+	    
+	    <div style="width:33%;" class="fragment">
+	      <h3>Activity</h3>
+	      <video height="600px" controls="true"  loop="true">
+		  <source src="media/abps-cropped.mp4" type="video/mp4" >
+		</video>
+
+	      <p>Modelling the cytoskeleton of the cell as ABPs and active filaments.</p>
+	      <p style="white-space: pre-line">
+		<b>Colaborators:</b>
+		Giuseppe Negro  (University of Edimburgh) 
+		Giuseppe Gonella (Università degli Studi di Bari Aldo Moro)</p>
+	    </div>
+	    
+	  </div>
+
+	  
+	</section>
+
+		<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;
+		     margin-bottom:2%;">Grooves</h2>
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    [3] C. Leclech, et al., Micro-Scale Topography Triggers Dynamic 3D Nuclear Deformations. Adv. Sci. 2024, 2410052</p>
+
+
+	  
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:28px;">
+
+	    <img width="600px" class="fragment" data-src="media/endothelium.png" style="position:absolute;
+											left:5%;
+											top:25%;"/>	    
+
+	    <video height="500px" controls="true" class="fragment" loop="true" style="position:absolute;
+											right:5%;
+											top:25%;">
+		  <source src="media/cells-moving.mp4" type="video/mp4" >
+		</video>
+
+	    
+	  </div>
+	</section>
+
+	
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;
+		     margin-bottom:2%;">Grooves</h2>
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    [3] C. Leclech, et al., Micro-Scale Topography Triggers Dynamic 3D Nuclear Deformations. Adv. Sci. 2024, 2410052</p>
+
+
+	  
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:40px;"
+	       >
+	    
+	    <img width="1000px" class="zoomR" data-src="media/grooves-exp.png" />
+
+	    <div class="fragment" style="text-align:centre;">
+	      <p>What mechanisms drive <b>nuclear caging and deformation</b>?
+	      <ul>
+		<li>Cell-substrate adhesion</li>
+		<li>Nucleus rigidity</li>
+		<li>Cytoskeleton-associated forces</li>
+	      </ul>
+	      </p>
+	    </div>
+	  </div>
+
+
+	</section>
+
+	
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;
+		     margin-bottom:5%;">Grooves</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+
+	    <div>
+	      \[
+	      \begin{align*}
+				&F[\phi, \nu, \psi] = \\
+				&=\int \overbrace{\kappa_0 \bigg(\underbrace{\frac{1}{4}\phi^2(1-\phi)^2  + {\frac{\kappa_1}{\kappa_0}}\frac{1}{4}\nu^2(1-\nu)^2}_{\text{Double well potential}} +\underbrace{ \frac{\varepsilon^2}{2}|\nabla \phi|^2+ {\frac{\kappa_1}{\kappa_0}}\frac{\varepsilon^2}{2}|\nabla \nu|^2}_\text{Interface maintenance penalty}}^\text{Surface terms} \bigg)d\mathbf{r}\\
+				&+ \int \kappa_0 \bigg(\underbrace{{\frac{\gamma}{\kappa_0}} h(\phi)h(\psi) + {\frac{\gamma}{\kappa_0}}h(1-\phi)h(\nu)}_{\text{Repulsion cell-substrate and nucleus-exterior}} +\underbrace{\frac{\eta}{\kappa_0}\nabla h(\phi)\cdot \nabla h(\psi)}_\text{Adhesion cell-substrate}\bigg)d\mathbf{r} \\
+				&+ \kappa_0 \bigg(\underbrace{\frac{\alpha}{\kappa_0}(V_{0,\phi} - V[\phi])^2 + \frac{\alpha}{\kappa_0}(V_{0,\nu} - V[\nu])^2}_\text{Volume conversation}\bigg)
+	      \end{align*}
+	      \]
+	      </div>
+	    <div style="width:37%;" >
+	      
+	      <img style="width=300px;" data-src="media/groove-model.png" />
+	    </div>
+	    
+	  </div>
+
+	  <p style="margin:5%;font-size:40px;">Differentiating with respect to each of the fields yields the equations for the dynamics of the system. To keep the cell from splitting in high curvature and adhesion regimes.</p>
+	  <!-- <p style="font-size:30px;">\[g[\phi]=-\chi \int _{\mathcal{S}} -e^{-|\mathbf{r}-\mathbf{r}'|/\delta} \phi(1-\phi)\nabla\phi(\mathbf{r})\cdot \nabla\phi(\mathbf{r'})\Theta \left(-\nabla\phi(\mathbf{r})\cdot \nabla\phi(\mathbf{r'})\right) \text{d}\mathbf{r'}\]</p> -->
+
+	  
+	</section>
+
+
+	<!-- Slide 4 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Grooves</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+
+	    <div style="width=50%;" class="zoomR">
+	      <img style="" data-src="media/grooves-Fig5.png" />
+	    </div>
+	    <div style="width=50%;" class="zoomL" >
+	      <img style="" data-src="media/grooves-Fig6.png" />
+	    </div>
+
+	    
+	  </div>
+	
+	</section>
+
+		<!-- Slide 4 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Grooves</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      flex-direction: column;
+		      font-size:30px;">
+
+	    <div style="width:1000px;" class="zoomB">
+	      <img style="" data-src="media/grooves-Fig7.png" />
+	    </div>
+	    <div style="width:1000px;" class="zoomT" >
+	      <img style="" data-src="media/grooves-Fig9.jpg" />
+	    </div>
+
+	    
+	  </div>
+
+	  
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    [2] C. Leclech, et al., Micro-Scale Topography Triggers Dynamic 3D Nuclear Deformations. Adv. Sci. 2024, 2410052</p>
+
+	  
+	</section>
+
+	
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Pitting of Malaria Infected Red Blood Cells</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+	    
+	    <div width="60%" style="" class="fragment">
+	      <img width="60%" data-src="media/spleen.png" style="position:absolute;
+											left:5%;
+											top:20%;" />
+	    </div>
+	    
+	    <div width="50%" style="" class="fragment">
+	      <img width="30%" class="zoomL" data-src="media/malaria.jpg" style="position:absolute;
+											right:3%;
+											top:30%;" />
+	    </div>
+
+	  </div>
+
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	    Adapted from:
+	    [3] Paulína Gálfiová et al., Biologia 64/6: 1242—1246, 2009
+	    [4] Cancer Research UK
+	    [5] medicoapps.org</p>
+	  
+	</section>
+
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Pitting of Malaria Infected Red Blood Cells</h2>
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     ">
+	  [6] Elizalde-Torrent, A., Trejo-Soto, C., Méndez-Mora, L. et al. Pitting of malaria parasites in microfluidic devices mimicking spleen interendothelial slits. Sci Rep 11, 22099 (2021)</p>
+
+	  
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;">
+	    
+	    <div  style="" class="fragment">
+	      	      <img width="700px" class="zoomR" data-src="media/pitting.png" style="position:absolute;
+											left:5%;
+											top:15%;" />
+
+	    </div>
+	    
+	    <div width="48%" class="fragment" style="position:absolute;
+						     right:5%;
+						     top:15%;
+						     display: flex;
+						     flex-direction: column;
+						     ">
+	      <video height="450px" controls="true" loop="true">
+		<source src="media/malaria-1.mp4" type="video/mp4" >
+	      </video>
+	      <video height="450px" controls="true"  loop="true">
+		<source src="media/malaria-2.mp4" type="video/mp4" >
+	      </video>
+	    </div>
+
+	  </div>
+	  
+	</section>
+
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Pitting of Malaria Infected Red Blood Cells</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      flex-direction: column;
+		      font-size:40px;">
+	    
+	    <div width="48%" style="font-size:50px;" class="fragment">
+	      <video height="600px" controls="true"  loop="true">
+		<source src="media/v=0.8.mp4" type="video/mp4" >
+	      </video>
+	      \[\xrightarrow{\text{Increasing adhesion}}\]
+	    </div>
+
+	    <div class="fragment" width="100px">
+	      <p>What factors drive pitting?</p>
+	      <ul>
+		<li>Geometry</li>
+		<li>Critical velocity</li>
+		<li>Cell-channel adhesion</li>
+		<li>Stiffness of the parasite</li>
+	      </ul>
+	    </div>
+	    
+
+	  </div>
+
+
+	  <!-- References -->
+	  <p  style="position:absolute;
+		     width: 100%;
+		     bottom: -5%;
+		     left:5%;
+		     text-align: left;
+		     font-size: 25px;
+		     white-space: pre-line;
+		     color:black;
+		     "></p>
+	  
+	</section>
+	  
+	
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h2 style="top 0; color:black;">Active Matter and Molecular Dynamics</h2>
+
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:40px;">
+
+	    <div style="width:45%;">
+	      <video  controls="true" loop="true">
+		<source src="media/abps.mp4" type="video/mp4" >
+	      </video>
+	      <img  class="zoomR" data-src="media/filaments.png" style="" />
+	    </div>
+
+	    <div style="width:50%;">
+	      Next steps:
+	      <ul>
+		<li>Clustering of ABPs enclosed within the membrane</li>
+		<li>Effect of the density and activity of the particles on the membrane deformation</li>
+		<li>Introducing active filaments within the membrane</li>
+		<li>Studying the formation of more complex filament structures (cross-linking, longer chains)</li>
+	      </ul>
+	    </div>
+
+	  </div>
+	  
+	  
+	</section>
+	
+	<!-- Slide 3 -->
+	<section style="height: 100%;" data-background-image="media/tissue.jpeg" data-background-opacity="10%">
+	  <h1 style="align:centre;
+		     color:black;">Questions?</h1>
+	  <div style="display: flex;
+		      align-items: center;
+		      justify-content: center;
+		      font-size:30px;
+		      margin:5%;">
+
+	    <div style="width:33%;" >
+	      <video height="600px" controls="false"  loop="true" autoplay="true">
+		<source src="media/grooves-2.mp4" type="video/mp4" >
+	      </video>
+	    </div>
+
+	    <div style="width:33%;" >
+	      <video height="600px" controls="false"  loop="true" autoplay="true">
+		  <source src="media/malaria-cropped.mp4" type="video/mp4" >
+		</video>
+	    </div>
+	    
+	    <div style="width:33%;" >
+	      <video width="600px" controls="false" loop="true" autoplay="true">
+		  <source src="media/abps-cropped.mp4" type="video/mp4" >
+		</video>
+	    </div>
+	    
+	  </div>
+	  
+	  <img style="position:absolute;
+		      left:2%;
+		      bottom:-10%;" data-src="media/logos.png" style="" />
+
+	</section>
+
+
+	</div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/@explorables/horde_of_the_flies"></script>
+      <script src="math/math.js"></script>
+      <script src="dist/reveal.js"></script>
+      <script>
+	Reveal.initialize({
+	    // The "normal" size of the presentation, aspect ratio will
+	    // be preserved when the presentation is scaled to fit different
+	    // resolutions. Can be specified using percentage units.
+	    width: "1920",
+	    height: "1080",
+
+	    // Factor of the display size that should remain empty around
+	    // the content
+	    margin: 0.04,
+
+	    // Bounds for smallest/largest possible scale to apply to content
+	    minScale: 0.2,
+	    maxScale: 2.0,
+
+	    slideNumber: true,
+
+	    mathjax3: {
+		// config: 'TeX-AMS_HTML-full',
+		TeX: {
+		    Macros: {
+			R: '\\mathbb{R}',
+			set: [ '\\left\\{#1 \\; ; \\; #2\\right\\}', 2 ]
+		    }
+		}
+	    },
+
+	    
+
+	    plugins: [ RevealMath.MathJax3 ]
+	});
+	
+      </script>
+
+  </body>
+</html>
